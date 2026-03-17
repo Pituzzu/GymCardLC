@@ -587,16 +587,16 @@ export default function App() {
   };
 
   return (
-    <div className={`min-h-screen bg-[#f5f5f5] dark:bg-[#0a0a0a] text-[#1a1a1a] dark:text-[#f5f5f5] font-sans pb-20 md:pb-0 ${isAdmin ? 'md:pl-64' : ''}`}>
+    <div className={`min-h-screen bg-[#f5f5f5] dark:bg-[#0a0a0a] text-[#1a1a1a] dark:text-[#f5f5f5] font-sans pb-24 md:pb-0 ${isAdmin ? 'md:pl-64' : ''}`}>
       {/* Sidebar / Bottom Nav - Only visible to Admin or on mobile for navigation */}
       {isAdmin && (
-        <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-[#141414] border-t dark:border-white/5 border-black/5 z-40 md:top-0 md:bottom-0 md:w-64 md:border-t-0 md:border-r md:flex md:flex-col p-4">
+        <nav className="fixed bottom-0 left-0 right-0 bg-white/80 dark:bg-[#141414]/80 backdrop-blur-lg border-t dark:border-white/5 border-black/5 z-40 md:top-0 md:bottom-0 md:w-64 md:border-t-0 md:border-r md:flex md:flex-col p-2 md:p-4">
           <div className="hidden md:block mb-8 px-2">
             <h1 className="text-2xl font-bold tracking-tight text-black dark:text-white">GymFlow</h1>
             <p className="text-xs text-muted-foreground uppercase tracking-widest mt-1">Admin Panel</p>
           </div>
           
-          <div className="flex justify-around md:flex-col md:gap-2">
+          <div className="flex justify-around md:flex-col md:gap-2 w-full">
             <NavButton 
               active={activeTab === 'dashboard'} 
               onClick={() => setActiveTab('dashboard')}
@@ -656,18 +656,19 @@ export default function App() {
 
       {/* Login Overlay for Restricted Tabs */}
       {!isAdmin && activeTab !== 'kiosk' && (
-        <div className="fixed inset-0 z-50 bg-white flex flex-col items-center justify-center p-6">
+        <div className="fixed inset-0 z-50 bg-white dark:bg-[#0a0a0a] flex flex-col items-center justify-center p-6">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="w-full max-w-md space-y-8 text-center"
           >
             <div className="space-y-2">
-              <div className="w-20 h-20 bg-black rounded-3xl flex items-center justify-center mx-auto mb-6">
-                <LogIn size={40} className="text-white" />
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-black dark:bg-white rounded-2xl md:rounded-3xl flex items-center justify-center mx-auto mb-6">
+                <LogIn size={32} className="text-white dark:text-black md:hidden" />
+                <LogIn size={40} className="text-white dark:text-black hidden md:block" />
               </div>
-              <h2 className="text-3xl font-bold tracking-tight text-black">Area Riservata</h2>
-              <p className="text-gray-500">Inserisci la password per accedere alla gestione.</p>
+              <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-black dark:text-white">Area Riservata</h2>
+              <p className="text-gray-500 dark:text-gray-400 text-sm md:text-base">Inserisci la password per accedere alla gestione.</p>
             </div>
 
             <form onSubmit={handleLogin} className="space-y-4">
@@ -795,9 +796,9 @@ export default function App() {
                   )}
 
                   {/* Stats Grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <StatCard label="Ingressi Oggi" value={stats.todayCount} icon={<LogIn className="text-blue-500" />} />
-                    <StatCard label="Totale Iscritti" value={stats.totalMembers} icon={<UserPlus className="text-purple-500" />} />
+                  <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 md:gap-4">
+                    <StatCard label="Ingressi" value={stats.todayCount} icon={<LogIn className="text-blue-500" />} />
+                    <StatCard label="Iscritti" value={stats.totalMembers} icon={<UserPlus className="text-purple-500" />} />
                   </div>
 
                   {/* History Section (Moved to Home) */}
@@ -997,99 +998,94 @@ export default function App() {
                   const isActive = activeAttendance.some(a => a.member_id === member.id);
                   return (
                     <div key={member.id} className="bg-white dark:bg-[#141414] p-5 rounded-3xl border border-black/5 dark:border-white/5 shadow-sm hover:shadow-md transition-all group">
-                      <div className="flex justify-between items-start mb-4">
-                        <div className="flex items-center gap-3">
+                      <div className="flex justify-between items-start mb-3 md:mb-4">
+                        <div className="flex items-center gap-2 md:gap-3">
                           <div 
-                            className="w-12 h-12 rounded-2xl bg-gray-100 dark:bg-white/10 flex items-center justify-center text-gray-500 dark:text-gray-400 font-bold text-lg cursor-pointer hover:bg-gray-200 dark:hover:bg-white/20 transition-colors"
+                            className="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-gray-100 dark:bg-white/10 flex items-center justify-center text-gray-500 dark:text-gray-400 font-bold text-base md:text-lg cursor-pointer hover:bg-gray-200 dark:hover:bg-white/20 transition-colors"
                             onClick={() => openMemberDetails(member)}
                           >
                             {member.name.charAt(0)}
                           </div>
                           <div>
                             <h4 
-                              className="font-bold text-lg cursor-pointer hover:underline"
+                              className="font-bold text-base md:text-lg cursor-pointer hover:underline"
                               onClick={() => openMemberDetails(member)}
                             >
                               {member.name}
                             </h4>
-                            <div className="flex flex-wrap gap-2 mt-1">
-                              <p className="text-[10px] text-gray-400 font-mono uppercase tracking-tighter flex items-center gap-1">
+                            <div className="flex flex-wrap gap-x-2 gap-y-1 mt-0.5">
+                              <p className="text-[9px] md:text-[10px] text-gray-400 font-mono uppercase tracking-tighter flex items-center gap-1">
                                 <CreditCard size={10} /> {member.card || 'No Card'}
                               </p>
-                              <p className="text-[10px] text-gray-400 font-mono uppercase tracking-tighter flex items-center gap-1">
-                                <Activity size={10} /> {member.weekly_frequency}gg/sett
-                              </p>
-                              <p className="text-[10px] text-gray-400 font-mono uppercase tracking-tighter flex items-center gap-1">
-                                <Euro size={10} /> {member.price}€
+                              <p className="text-[9px] md:text-[10px] text-gray-400 font-mono uppercase tracking-tighter flex items-center gap-1">
+                                <Activity size={10} /> {member.weekly_frequency}gg
                               </p>
                               {member.subscription_expiry && (
-                                <p className={`text-[10px] font-mono uppercase tracking-tighter flex items-center gap-1 ${new Date(member.subscription_expiry) < new Date() ? 'text-red-500 font-bold' : 'text-gray-400'}`}>
-                                  <CalendarDays size={10} /> Scad: {new Date(member.subscription_expiry).toLocaleDateString('it-IT')}
+                                <p className={`text-[9px] md:text-[10px] font-mono uppercase tracking-tighter flex items-center gap-1 ${new Date(member.subscription_expiry) < new Date() ? 'text-red-500 font-bold' : 'text-gray-400'}`}>
+                                  <CalendarDays size={10} /> {new Date(member.subscription_expiry).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' })}
                                 </p>
                               )}
-                              {member.available_recoveries ? (
-                                <p className="text-[10px] text-blue-500 font-bold font-mono uppercase tracking-tighter flex items-center gap-1">
-                                  <History size={10} /> {member.available_recoveries} Recuperi
-                                </p>
-                              ) : null}
                             </div>
                           </div>
                         </div>
-                        <div className="flex flex-col items-end gap-2">
+                        <div className="flex flex-col items-end gap-1.5 md:gap-2">
                           {isActive ? (
-                            <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-500/10 px-2 py-1 rounded-full uppercase tracking-wider">
-                              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                            <span className="flex items-center gap-1 text-[9px] md:text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-500/10 px-2 py-0.5 md:py-1 rounded-full uppercase tracking-wider">
+                              <div className="w-1 h-1 md:w-1.5 md:h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                               In sala
                             </span>
                           ) : (
-                            <span className="text-[10px] font-bold text-gray-400 bg-gray-50 dark:bg-white/5 px-2 py-1 rounded-full uppercase tracking-wider">
+                            <span className="text-[9px] md:text-[10px] font-bold text-gray-400 bg-gray-50 dark:bg-white/5 px-2 py-0.5 md:py-1 rounded-full uppercase tracking-wider">
                               Assente
                             </span>
                           )}
-                          <div className="flex items-center gap-1">
-                            <button 
-                              onClick={() => handleRenew(member.id)}
-                              title="Rinnova Mese"
-                              className="p-2 text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 rounded-lg transition-all"
-                            >
-                              <CalendarIcon size={16} />
-                            </button>
-                            <button 
-                              onClick={() => openEditModal(member)}
-                              title="Modifica"
-                              className="p-2 text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 rounded-lg transition-all"
-                            >
-                              <Edit2 size={16} />
-                            </button>
-                            <button 
-                              onClick={() => handleResetMemberEntries(member.id)}
-                              title="Reset Ingressi"
-                              className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-all"
-                            >
-                              <History size={16} />
-                            </button>
-                          </div>
                         </div>
                       </div>
                       
-                      <div className="flex gap-2 mt-4">
-                        {!isActive ? (
+                      <div className="flex items-center justify-between gap-2 mt-3 md:mt-4">
+                        <div className="flex items-center gap-1">
                           <button 
-                            onClick={() => handleCheckIn(member.id)}
-                            className="flex-1 flex items-center justify-center gap-2 py-3 bg-emerald-500 text-white rounded-xl font-bold hover:bg-emerald-600 transition-colors shadow-lg shadow-emerald-500/20"
+                            onClick={() => handleRenew(member.id)}
+                            title="Rinnova Mese"
+                            className="p-2 text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 rounded-lg transition-all"
                           >
-                            <LogIn size={18} />
-                            Check-in
+                            <CalendarIcon size={16} />
                           </button>
-                        ) : (
                           <button 
-                            disabled
-                            className="flex-1 flex items-center justify-center gap-2 py-3 bg-gray-100 dark:bg-white/5 text-gray-400 rounded-xl font-bold cursor-not-allowed"
+                            onClick={() => openEditModal(member)}
+                            title="Modifica"
+                            className="p-2 text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-white/5 rounded-lg transition-all"
                           >
-                            <CheckCircle2 size={18} />
-                            Già in sala
+                            <Edit2 size={16} />
                           </button>
-                        )}
+                          <button 
+                            onClick={() => handleResetMemberEntries(member.id)}
+                            title="Reset Ingressi"
+                            className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 rounded-lg transition-all"
+                          >
+                            <History size={16} />
+                          </button>
+                        </div>
+
+                        <div className="flex-1 max-w-[120px]">
+                          {!isActive ? (
+                            <button 
+                              onClick={() => handleCheckIn(member.id)}
+                              className="w-full flex items-center justify-center gap-1.5 py-2 bg-emerald-500 text-white rounded-lg font-bold hover:bg-emerald-600 transition-colors shadow-md shadow-emerald-500/20 text-xs"
+                            >
+                              <LogIn size={14} />
+                              Check-in
+                            </button>
+                          ) : (
+                            <button 
+                              disabled
+                              className="w-full flex items-center justify-center gap-1.5 py-2 bg-gray-100 dark:bg-white/5 text-gray-400 rounded-lg font-bold cursor-not-allowed text-xs"
+                            >
+                              <CheckCircle2 size={14} />
+                              In sala
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
                   );
@@ -1122,21 +1118,21 @@ export default function App() {
                   <table className="w-full text-left">
                     <thead>
                       <tr className="bg-gray-50 dark:bg-white/5 border-bottom border-black/5 dark:border-white/5">
-                        <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Iscritto</th>
-                        <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Data</th>
-                        <th className="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Entrata</th>
+                        <th className="px-4 md:px-6 py-4 text-[10px] md:text-xs font-bold text-gray-400 uppercase tracking-widest">Iscritto</th>
+                        <th className="px-4 md:px-6 py-4 text-[10px] md:text-xs font-bold text-gray-400 uppercase tracking-widest">Data</th>
+                        <th className="px-4 md:px-6 py-4 text-[10px] md:text-xs font-bold text-gray-400 uppercase tracking-widest">Entrata</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-black/5 dark:divide-white/5">
                       {history.map((record) => {
                         return (
                           <tr key={record.id} className="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
-                            <td className="px-6 py-4 font-medium cursor-pointer hover:underline" onClick={() => {
+                            <td className="px-4 md:px-6 py-4 text-sm font-medium cursor-pointer hover:underline" onClick={() => {
                               const m = members.find(m => m.id === record.member_id);
                               if (m) openMemberDetails(m);
                             }}>{record.name}</td>
-                            <td className="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{formatDate(record.check_in)}</td>
-                            <td className="px-6 py-4 text-sm font-mono">{formatTime(record.check_in)}</td>
+                            <td className="px-4 md:px-6 py-4 text-xs md:text-sm text-gray-500 dark:text-gray-400">{formatDate(record.check_in)}</td>
+                            <td className="px-4 md:px-6 py-4 text-xs md:text-sm font-mono">{formatTime(record.check_in)}</td>
                           </tr>
                         );
                       })}
@@ -1161,13 +1157,14 @@ export default function App() {
               </header>
 
               {!isAdvancedUnlocked ? (
-                <section className="bg-white dark:bg-zinc-900 rounded-[2.5rem] p-12 shadow-2xl border border-black/5 dark:border-white/5 text-center space-y-8">
-                  <div className="w-20 h-20 bg-red-50 dark:bg-red-500/10 rounded-3xl flex items-center justify-center mx-auto rotate-3">
-                    <Lock size={40} className="text-red-500" />
+                <section className="bg-white dark:bg-zinc-900 rounded-[2.5rem] p-8 md:p-12 shadow-2xl border border-black/5 dark:border-white/5 text-center space-y-6 md:space-y-8">
+                  <div className="w-16 h-16 md:w-20 md:h-20 bg-red-50 dark:bg-red-500/10 rounded-2xl md:rounded-3xl flex items-center justify-center mx-auto rotate-3">
+                    <Lock size={32} className="text-red-500 md:hidden" />
+                    <Lock size={40} className="text-red-500 hidden md:block" />
                   </div>
                   <div className="space-y-2">
-                    <h3 className="text-2xl font-bold text-black dark:text-white">Area Protetta</h3>
-                    <p className="text-gray-500 dark:text-gray-400">Inserisci la password amministratore per accedere alle funzioni avanzate.</p>
+                    <h3 className="text-xl md:text-2xl font-bold text-black dark:text-white">Area Protetta</h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">Inserisci la password amministratore per accedere alle funzioni avanzate.</p>
                   </div>
                   <form onSubmit={handleAdvancedUnlock} className="flex flex-col gap-4 max-w-xs mx-auto">
                     <input 
@@ -1182,14 +1179,15 @@ export default function App() {
                 </section>
               ) : (
                 <div className="space-y-6">
-                  <section className="bg-white dark:bg-zinc-900 rounded-[2.5rem] p-8 shadow-sm border border-black/5 dark:border-white/5 space-y-8">
-                    <div className="flex items-center gap-6">
-                      <div className="w-14 h-14 bg-blue-50 dark:bg-blue-500/10 rounded-2xl flex items-center justify-center">
-                        <CheckCircle2 size={28} className="text-blue-500" />
+                  <section className="bg-white dark:bg-zinc-900 rounded-[2.5rem] p-6 md:p-8 shadow-sm border border-black/5 dark:border-white/5 space-y-6 md:space-y-8">
+                    <div className="flex items-center gap-4 md:gap-6">
+                      <div className="w-12 h-12 md:w-14 md:h-14 bg-blue-50 dark:bg-blue-500/10 rounded-xl md:rounded-2xl flex items-center justify-center">
+                        <CheckCircle2 size={24} className="text-blue-500 md:hidden" />
+                        <CheckCircle2 size={28} className="text-blue-500 hidden md:block" />
                       </div>
                       <div className="flex-1">
-                        <h3 className="text-xl font-bold">Validazione Settimanale</h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Valida gli ingressi della settimana e assegna i recuperi. Disponibile Sabato e Domenica.</p>
+                        <h3 className="text-lg md:text-xl font-bold">Validazione Settimanale</h3>
+                        <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400">Valida gli ingressi della settimana e assegna i recuperi. Disponibile Sabato e Domenica.</p>
                       </div>
                     </div>
                     <button 
@@ -1205,14 +1203,15 @@ export default function App() {
                     </button>
                   </section>
 
-                  <section className="bg-white dark:bg-zinc-900 rounded-[2.5rem] p-8 shadow-sm border border-black/5 dark:border-white/5 space-y-8">
-                    <div className="flex items-center gap-6">
-                      <div className="w-14 h-14 bg-red-50 dark:bg-red-500/10 rounded-2xl flex items-center justify-center">
-                        <RefreshCw size={28} className="text-red-500" />
+                  <section className="bg-white dark:bg-zinc-900 rounded-[2.5rem] p-6 md:p-8 shadow-sm border border-black/5 dark:border-white/5 space-y-6 md:space-y-8">
+                    <div className="flex items-center gap-4 md:gap-6">
+                      <div className="w-12 h-12 md:w-14 md:h-14 bg-red-50 dark:bg-red-500/10 rounded-xl md:rounded-2xl flex items-center justify-center">
+                        <RefreshCw size={24} className="text-red-500 md:hidden" />
+                        <RefreshCw size={28} className="text-red-500 hidden md:block" />
                       </div>
                       <div className="flex-1">
-                        <h3 className="text-xl font-bold">Reset Globale Ingressi</h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">Azzera il conteggio degli ingressi settimanali per tutti gli iscritti.</p>
+                        <h3 className="text-lg md:text-xl font-bold">Reset Globale Ingressi</h3>
+                        <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400">Azzera il conteggio degli ingressi settimanali per tutti gli iscritti.</p>
                       </div>
                     </div>
                     <button 
@@ -1254,84 +1253,86 @@ export default function App() {
                 </button>
               )}
 
-              <div className="text-center space-y-8 max-w-3xl w-full">
+              <div className="text-center space-y-6 md:space-y-8 max-w-3xl w-full px-4">
                 {!nfcMessage ? (
                   <motion.div 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    className="space-y-6"
+                    className="space-y-4 md:space-y-6"
                   >
-                    <div className="w-32 h-32 bg-white/5 rounded-full flex items-center justify-center mx-auto animate-pulse">
-                      <CreditCard size={64} className="text-white/20" />
+                    <div className="w-24 h-24 md:w-32 md:h-32 bg-white/5 rounded-full flex items-center justify-center mx-auto animate-pulse">
+                      <CreditCard size={48} className="text-white/20 md:hidden" />
+                      <CreditCard size={64} className="text-white/20 hidden md:block" />
                     </div>
-                    <h2 className="text-4xl font-bold tracking-tight">Passa la tua Card</h2>
-                    <p className="text-xl text-white/40">Avvicina la card al lettore per entrare</p>
+                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Passa la tua Card</h2>
+                    <p className="text-lg md:text-xl text-white/40">Avvicina la card al lettore per entrare</p>
                   </motion.div>
                 ) : (
                   <motion.div 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="space-y-10"
+                    className="space-y-6 md:space-y-10"
                   >
-                    <div className={`w-40 h-40 rounded-full flex items-center justify-center mx-auto shadow-2xl ${nfcMessage.type === 'success' ? 'bg-emerald-500 shadow-emerald-500/40' : 'bg-red-500 shadow-red-500/40'}`}>
-                      {nfcMessage.type === 'success' ? <CheckCircle2 size={80} /> : <XCircle size={80} />}
+                    <div className={`w-32 h-32 md:w-40 md:h-40 rounded-full flex items-center justify-center mx-auto shadow-2xl ${nfcMessage.type === 'success' ? 'bg-emerald-500 shadow-emerald-500/40' : 'bg-red-500 shadow-red-500/40'}`}>
+                      {nfcMessage.type === 'success' ? <CheckCircle2 size={60} className="md:hidden" /> : <XCircle size={60} className="md:hidden" />}
+                      {nfcMessage.type === 'success' ? <CheckCircle2 size={80} className="hidden md:block" /> : <XCircle size={80} className="hidden md:block" />}
                     </div>
 
-                    <div className="space-y-3">
-                      <h2 className="text-6xl font-black tracking-tighter uppercase truncate px-4">
+                    <div className="space-y-2 md:space-y-3">
+                      <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase truncate px-2 md:px-4">
                         {nfcMessage.data?.memberName || (nfcMessage.type === 'success' ? 'BENVENUTO' : 'ATTENZIONE')}
                       </h2>
-                      <p className={`text-3xl font-bold ${nfcMessage.type === 'success' ? 'text-emerald-400' : 'text-red-400'}`}>
+                      <p className={`text-xl md:text-3xl font-bold ${nfcMessage.type === 'success' ? 'text-emerald-400' : 'text-red-400'}`}>
                         {nfcMessage.text.split(':')[1] || nfcMessage.text}
                       </p>
                     </div>
 
                     {nfcMessage.data && (
-                      <div className="space-y-8 pt-8 border-t border-white/10">
+                      <div className="space-y-6 md:space-y-8 pt-6 md:pt-8 border-t border-white/10">
                         {/* Weekly Attendance Dots */}
-                        <div className="space-y-4">
-                          <p className="text-xs font-bold text-white/40 uppercase tracking-widest">Presenze Settimanali</p>
-                          <div className="flex justify-center gap-3">
+                        <div className="space-y-3 md:space-y-4">
+                          <p className="text-[10px] md:text-xs font-bold text-white/40 uppercase tracking-widest">Presenze Settimanali</p>
+                          <div className="flex justify-center gap-2 md:gap-3">
                             {['L', 'M', 'M', 'G', 'V', 'S', 'D'].map((day, index) => {
                               const dayNum = (index + 1) % 7; // 1=Mon, ..., 6=Sat, 0=Sun
                               const attended = nfcMessage.data.weeklyDays?.includes(dayNum);
                               const isToday = new Date().getDay() === dayNum;
                               return (
-                                <div key={index} className="flex flex-col items-center gap-2">
-                                  <div className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold transition-all border-2 ${attended ? 'bg-emerald-500 border-emerald-400 shadow-lg shadow-emerald-500/20' : isToday ? 'border-white/40 bg-white/10' : 'bg-white/5 border-white/10 text-white/20'}`}>
-                                    {attended ? <Check size={20} /> : day}
+                                <div key={index} className="flex flex-col items-center gap-1 md:gap-2">
+                                  <div className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-base md:text-lg font-bold transition-all border-2 ${attended ? 'bg-emerald-500 border-emerald-400 shadow-lg shadow-emerald-500/20' : isToday ? 'border-white/40 bg-white/10' : 'bg-white/5 border-white/10 text-white/20'}`}>
+                                    {attended ? <Check size={18} /> : day}
                                   </div>
-                                  <span className={`text-[8px] font-bold uppercase ${isToday ? 'text-white' : 'text-white/20'}`}>{['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'][index]}</span>
+                                  <span className={`text-[7px] md:text-[8px] font-bold uppercase ${isToday ? 'text-white' : 'text-white/20'}`}>{['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'][index]}</span>
                                 </div>
                               );
                             })}
                           </div>
                         </div>
 
-                        <div className="grid grid-cols-3 gap-4">
-                          <div className="bg-white/5 p-4 rounded-[2rem] text-left border border-white/5">
-                            <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-1">Frequenza</p>
-                            <div className="flex items-end gap-1">
-                              <span className="text-3xl font-black">{nfcMessage.data.weeklyCount || 0}</span>
-                              <span className="text-lg text-white/40 mb-0.5">/ {nfcMessage.data.weeklyFrequency || '/'}</span>
+                        <div className="grid grid-cols-3 gap-2 md:gap-4">
+                          <div className="bg-white/5 p-3 md:p-4 rounded-2xl md:rounded-[2rem] text-left border border-white/5">
+                            <p className="text-[8px] md:text-[10px] font-bold text-white/40 uppercase tracking-widest mb-1">Frequenza</p>
+                            <div className="flex items-end gap-0.5 md:gap-1">
+                              <span className="text-2xl md:text-3xl font-black">{nfcMessage.data.weeklyCount || 0}</span>
+                              <span className="text-sm md:text-lg text-white/40 mb-0.5">/ {nfcMessage.data.weeklyFrequency || '/'}</span>
                             </div>
                           </div>
-                          <div className="bg-white/5 p-4 rounded-[2rem] text-left border border-white/5">
-                            <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-1">Recuperi</p>
-                            <div className="flex items-end gap-1">
-                              <span className="text-3xl font-black text-blue-400">{nfcMessage.data.availableRecoveries || 0}</span>
+                          <div className="bg-white/5 p-3 md:p-4 rounded-2xl md:rounded-[2rem] text-left border border-white/5">
+                            <p className="text-[8px] md:text-[10px] font-bold text-white/40 uppercase tracking-widest mb-1">Recuperi</p>
+                            <div className="flex items-end gap-0.5 md:gap-1">
+                              <span className="text-2xl md:text-3xl font-black text-blue-400">{nfcMessage.data.availableRecoveries || 0}</span>
                             </div>
                           </div>
-                          <div className={`p-4 rounded-[2rem] text-left border ${
+                          <div className={`p-3 md:p-4 rounded-2xl md:rounded-[2rem] text-left border ${
                             nfcMessage.data.expiryDate && new Date(nfcMessage.data.expiryDate) < new Date() 
                               ? 'bg-red-500/10 border-red-500/20' 
                               : nfcMessage.data.expiryDate && (new Date(nfcMessage.data.expiryDate).getTime() - new Date().getTime()) < (3 * 24 * 60 * 60 * 1000)
                                 ? 'bg-orange-500/10 border-orange-500/20'
                                 : 'bg-white/5 border-white/5'
                           }`}>
-                            <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-1">Scadenza</p>
-                            <div className="flex items-center gap-2">
-                              <span className={`text-xl font-bold ${
+                            <p className="text-[8px] md:text-[10px] font-bold text-white/40 uppercase tracking-widest mb-1">Scadenza</p>
+                            <div className="flex items-center gap-1 md:gap-2">
+                              <span className={`text-base md:text-xl font-bold ${
                                 !nfcMessage.data.expiryDate || isNaN(new Date(nfcMessage.data.expiryDate).getTime())
                                   ? 'text-white/20'
                                   : nfcMessage.data.expiryDate && new Date(nfcMessage.data.expiryDate) < new Date() 
@@ -1342,7 +1343,7 @@ export default function App() {
                               }`}>
                                 {!nfcMessage.data.expiryDate || isNaN(new Date(nfcMessage.data.expiryDate).getTime()) 
                                   ? '/' 
-                                  : new Date(nfcMessage.data.expiryDate).toLocaleDateString('it-IT')}
+                                  : new Date(nfcMessage.data.expiryDate).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit' })}
                               </span>
                             </div>
                           </div>
@@ -1383,20 +1384,20 @@ export default function App() {
               className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             />
             <motion.div 
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-2xl bg-white dark:bg-[#141414] rounded-[2rem] p-8 shadow-2xl overflow-y-auto max-h-[90vh]"
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-2xl bg-white dark:bg-[#141414] rounded-t-[2rem] md:rounded-[2rem] p-6 md:p-10 shadow-2xl overflow-y-auto max-h-[95vh] md:max-h-[90vh] mt-auto md:mt-0"
             >
-              <div className="flex justify-between items-start mb-8">
-                <div className="flex items-center gap-6">
-                  <div className="w-20 h-20 rounded-3xl bg-black dark:bg-white text-white dark:text-black flex items-center justify-center text-3xl font-bold">
+              <div className="flex justify-between items-start mb-6 md:mb-8">
+                <div className="flex items-center gap-4 md:gap-6">
+                  <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl md:rounded-3xl bg-black dark:bg-white text-white dark:text-black flex items-center justify-center text-2xl md:text-3xl font-bold">
                     {selectedMember.name.charAt(0)}
                   </div>
                   <div>
-                    <h3 className="text-3xl font-bold">{selectedMember.name}</h3>
-                    <p className="text-gray-500 dark:text-gray-400 flex items-center gap-2 mt-1">
-                      <CreditCard size={16} /> {selectedMember.card || 'Nessuna Card'}
+                    <h3 className="text-2xl md:text-3xl font-bold">{selectedMember.name}</h3>
+                    <p className="text-gray-500 dark:text-gray-400 flex items-center gap-2 mt-1 text-sm">
+                      <CreditCard size={14} /> {selectedMember.card || 'Nessuna Card'}
                     </p>
                   </div>
                 </div>
@@ -1511,10 +1512,10 @@ export default function App() {
               className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             />
             <motion.div 
-              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-lg bg-white dark:bg-[#141414] rounded-[2rem] p-8 shadow-2xl overflow-y-auto max-h-[90vh]"
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-lg bg-white dark:bg-[#141414] rounded-t-[2rem] md:rounded-[2rem] p-6 md:p-8 shadow-2xl overflow-y-auto max-h-[95vh] md:max-h-[90vh] mt-auto md:mt-0"
             >
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-2xl font-bold">{editingMember ? 'Modifica Iscritto' : 'Nuovo Iscritto'}</h3>
@@ -1860,27 +1861,27 @@ function NavButton({ active, onClick, icon, label }: { active: boolean, onClick:
     <button 
       onClick={onClick}
       className={`
-        flex flex-col md:flex-row items-center gap-1 md:gap-3 px-4 py-2 md:py-3 rounded-2xl transition-all
+        flex flex-col md:flex-row items-center justify-center gap-1 md:gap-3 px-2 md:px-4 py-2 md:py-3 rounded-xl md:rounded-2xl transition-all flex-1 md:flex-none
         ${active 
           ? 'text-black dark:text-white bg-black/5 dark:bg-white/10 md:bg-black md:dark:bg-white md:text-white md:dark:text-black font-bold' 
           : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5'
         }
       `}
     >
-      {icon}
-      <span className="text-[10px] md:text-sm uppercase md:capitalize tracking-wider md:tracking-normal">{label}</span>
+      <div className="md:scale-100 scale-90">{icon}</div>
+      <span className="text-[9px] md:text-sm uppercase md:capitalize tracking-wider md:tracking-normal font-semibold md:font-medium">{label}</span>
     </button>
   );
 }
 
 function StatCard({ label, value, icon }: { label: string, value: number, icon: React.ReactNode }) {
   return (
-    <div className="bg-white dark:bg-[#141414] p-6 rounded-3xl border border-black/5 dark:border-white/5 shadow-sm flex items-center justify-between">
+    <div className="bg-white dark:bg-[#141414] p-4 md:p-6 rounded-2xl md:rounded-3xl border border-black/5 dark:border-white/5 shadow-sm flex items-center justify-between">
       <div>
-        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">{label}</p>
-        <p className="text-3xl font-light tracking-tighter">{value}</p>
+        <p className="text-[10px] md:text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">{label}</p>
+        <p className="text-2xl md:text-3xl font-light tracking-tighter">{value}</p>
       </div>
-      <div className="w-12 h-12 rounded-2xl bg-gray-50 dark:bg-white/5 flex items-center justify-center">
+      <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl md:rounded-2xl bg-gray-50 dark:bg-white/5 flex items-center justify-center">
         {icon}
       </div>
     </div>
