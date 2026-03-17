@@ -1,0 +1,5 @@
+{
+  "name": "GymFlow PWA",
+  "description": "Gestione presenze e iscritti per palestre. Semplice, veloce e installabile come PWA.",
+  "requestFramePermissions": []
+}
